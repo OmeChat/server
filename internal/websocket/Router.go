@@ -2,7 +2,6 @@ package websocket
 
 import (
 	"github.com/OmeChat/server/internal/storage"
-	"github.com/OmeChat/server/internal/websocket/actions"
 	"github.com/gofiber/websocket/v2"
 )
 
@@ -33,7 +32,7 @@ func Router(c *websocket.Conn) {
 
 		switch req.Action {
 		case "exchange-key":
-			actions.ExchangeKey(c, req.Payload, req.UserHash)
+			exchangeKey(c, req.Payload, req.UserHash)
 			break
 		default:
 			err := c.WriteJSON(ErrorResponse{

@@ -83,3 +83,27 @@ func (s UserModel) GetHashByUsername(username string) string {
 	}
 	return ""
 }
+
+// GetUserByHash returns an instance of the UserModel,
+// which contains information about the requested user
+// identified by the given hash
+func (s UserModel) GetUserByHash(userHash string) UserModel {
+	for hash, usr := range s.getAllUser() {
+		if hash == userHash {
+			return usr
+		}
+	}
+	return UserModel{}
+}
+
+// AddClientToUser adds a new clientHash to he array of the user
+// identified by the given userHash. After that all the data is saved
+// to the user.json file in the local storage.
+func (s UserModel) AddClientToUser(userHash string, clientHash string) {
+	users := s.getAllUser()
+	userModel := users[userHash]
+	userModel.Clients = append(userModel.Clients, clientHash)
+	users[userHash] = userModel
+	jsonString, _ := json.Marshal(users)
+	_ = ioutil.WriteFile("./data/user.json", jsonString, 0644)
+}
