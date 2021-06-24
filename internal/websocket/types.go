@@ -16,6 +16,7 @@ type ErrorResponse struct {
 type WebsocketRequest struct {
 	Action      string      `json:"action"`
 	UserHash    string      `json:"user_hash"`
+	ClientHash  string      `json:"client_hash"`
 	AccessToken string      `json:"access_token"`
 	Payload     interface{} `json:"payload"`
 }

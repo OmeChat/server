@@ -2,7 +2,7 @@ package websocket
 
 import "github.com/gofiber/websocket/v2"
 
-var WS_CONNECTIONS map[string]*websocket.Conn
+var WS_CONNECTIONS map[string][]*websocket.Conn
 
 var WS_DATAFLOW_CHANNEL chan ConnectionPair
 
@@ -15,9 +15,9 @@ func DataHandler() {
 	for {
 		pair := <-WS_DATAFLOW_CHANNEL
 		if WS_CONNECTIONS[pair.Hash] == nil {
-			WS_CONNECTIONS[pair.Hash] = pair.Connection
+			WS_CONNECTIONS[pair.Hash] = []*websocket.Conn{pair.Connection}
 		} else {
-
+			WS_CONNECTIONS[pair.Hash] = append(WS_CONNECTIONS[pair.Hash], pair.Connection)
 		}
 	}
 }

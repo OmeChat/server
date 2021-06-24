@@ -1,7 +1,8 @@
 package websocket
 
 import (
-	"fmt"
+	"github.com/OmeChat/server/internal/storage"
+	"github.com/OmeChat/server/internal/websocket/actions"
 	"github.com/gofiber/websocket/v2"
 )
 
@@ -18,10 +19,21 @@ func Router(c *websocket.Conn) {
 			})
 			break
 		}
+
+		if !storage.CheckAuthStatus(req.UserHash, req.ClientHash, req.AccessToken) {
+			_ = c.WriteJSON(ErrorResponse{
+				Message: "login failed",
+				Error:   "The given login credentials are wrong",
+				Status:  200,
+			})
+			break
+		}
+
 		WS_DATAFLOW_CHANNEL <- ConnectionPair{req.UserHash, c}
+
 		switch req.Action {
 		case "exchange-key":
-			fmt.Println("dass du out bist")
+			actions.ExchangeKey(c, req.Payload, req.UserHash)
 			break
 		default:
 			err := c.WriteJSON(ErrorResponse{
