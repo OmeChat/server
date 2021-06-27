@@ -4,11 +4,13 @@ on:
   release:
     types:
       - created
+  push:
+    branches:
+      - main
 
 
 jobs:
   docker:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:

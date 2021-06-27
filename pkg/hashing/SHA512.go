@@ -9,6 +9,6 @@ import (
 // and encodes it into hex
 func SHA512(val string) string {
 	hasher := sha512.New()
-	hasher.Write([]byte(val))
+	_, _ = hasher.Write([]byte(val))
 	return hex.EncodeToString(hasher.Sum(nil))
 }
