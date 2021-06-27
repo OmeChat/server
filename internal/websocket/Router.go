@@ -43,7 +43,6 @@ func Router(c *websocket.Conn) {
 			if err != nil {
 				_ = c.Close()
 			}
-			break
 		}
 	}
 }

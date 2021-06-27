@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/OmeChat/server/internal/webserver/routes"
 	userRoutes "github.com/OmeChat/server/internal/webserver/routes/user"
 	ws "github.com/OmeChat/server/internal/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -32,6 +33,8 @@ func main() {
 	ws.WS_DATAFLOW_CHANNEL = channel
 	m := make(map[string][]ws.ConnectionIdentifier)
 	ws.WS_CONNECTIONS = m
+
+	app.Get("/", routes.DefaultEndpoint)
 	userAPI := app.Group("/user-api")
 	userAPI.Post("/create-account", userRoutes.CreateAccount)
 	userAPI.Post("/add-client", userRoutes.AddClient)
