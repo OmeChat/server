@@ -4,11 +4,6 @@ import (
 	"github.com/gofiber/websocket/v2"
 )
 
-type exchangeKeyPayload struct {
-	TargetHash string
-	key        string
-}
-
 type exchangeKeyResponse struct {
 	Action     string `json:"action"`
 	Key        string `json:"key"`
@@ -17,10 +12,9 @@ type exchangeKeyResponse struct {
 
 // exchangeKey executes the process of sending the public key for
 // the end to end encryption to all clients of the given target
-// hash. The state of this process is being returned as a
-// boolean value
+// hash.
 func exchangeKey(c *websocket.Conn, payload interface{}, userHash string) {
-	data, ok := payload.(exchangeKeyPayload)
+	data, ok := PayloadParser("exchange-key", payload)
 	if !ok {
 		_ = c.WriteJSON(ErrorResponse{
 			Message: "Invalid payload",
@@ -29,11 +23,13 @@ func exchangeKey(c *websocket.Conn, payload interface{}, userHash string) {
 		})
 		return
 	}
-	conns := WS_CONNECTIONS[data.TargetHash]
+	hash, _ := data["target_hash"].(string)
+	conns := WS_CONNECTIONS[hash]
+	key, _ := data["key"].(string)
 	for _, el := range conns {
-		_ = el.WriteJSON(exchangeKeyResponse{
+		_ = el.Connection.WriteJSON(exchangeKeyResponse{
 			Action:     "exchange-key",
-			Key:        data.key,
+			Key:        key,
 			SenderHash: userHash,
 		})
 	}

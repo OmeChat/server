@@ -19,9 +19,11 @@ func main() {
 
 	app.Use("/ws", websocket.New(ws.Router))
 
-	ws.WS_DATAFLOW_CHANNEL = *new(chan ws.ConnectionPair)
-	go ws.DataHandler()
-
+	channel := make(chan ws.ConnectionPair)
+	go ws.DataHandler(channel)
+	ws.WS_DATAFLOW_CHANNEL = channel
+	m := make(map[string][]ws.ConnectionIdentifier)
+	ws.WS_CONNECTIONS = m
 	userAPI := app.Group("/user-api")
 	userAPI.Post("/create-account", userRoutes.CreateAccount)
 	userAPI.Post("/add-client", userRoutes.AddClient)

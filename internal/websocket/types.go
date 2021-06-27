@@ -3,8 +3,14 @@ package websocket
 import "github.com/gofiber/websocket/v2"
 
 type ConnectionPair struct {
-	Hash       string
+	UserHash   string
+	ClientHash string
 	Connection *websocket.Conn
+}
+
+type ConnectionIdentifier struct {
+	Connection *websocket.Conn
+	ClientHash string
 }
 
 type ErrorResponse struct {

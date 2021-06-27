@@ -18,7 +18,6 @@ func Router(c *websocket.Conn) {
 			})
 			break
 		}
-
 		if !storage.CheckAuthStatus(req.UserHash, req.ClientHash, req.AccessToken) {
 			_ = c.WriteJSON(ErrorResponse{
 				Message: "login failed",
@@ -27,9 +26,7 @@ func Router(c *websocket.Conn) {
 			})
 			break
 		}
-
-		WS_DATAFLOW_CHANNEL <- ConnectionPair{req.UserHash, c}
-
+		WS_DATAFLOW_CHANNEL <- ConnectionPair{req.UserHash, req.ClientHash, c}
 		switch req.Action {
 		case "exchange-key":
 			exchangeKey(c, req.Payload, req.UserHash)

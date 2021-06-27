@@ -1,8 +1,6 @@
 package websocket
 
-import "github.com/gofiber/websocket/v2"
-
-var WS_CONNECTIONS map[string][]*websocket.Conn
+var WS_CONNECTIONS map[string][]ConnectionIdentifier
 
 var WS_DATAFLOW_CHANNEL chan ConnectionPair
 
@@ -11,13 +9,29 @@ var WS_DATAFLOW_CHANNEL chan ConnectionPair
 // map. If there is already an client connected
 // with the same hash, the new connection will be
 // added to the list of connected clients
-func DataHandler() {
+func DataHandler(dataChannel chan ConnectionPair) {
 	for {
-		pair := <-WS_DATAFLOW_CHANNEL
-		if WS_CONNECTIONS[pair.Hash] == nil {
-			WS_CONNECTIONS[pair.Hash] = []*websocket.Conn{pair.Connection}
+		pair := <-dataChannel
+		if WS_CONNECTIONS[pair.UserHash] == nil {
+			var arr []ConnectionIdentifier
+			arr = append(arr, ConnectionIdentifier{
+				Connection: pair.Connection,
+				ClientHash: pair.ClientHash,
+			})
+			WS_CONNECTIONS[pair.UserHash] = arr
 		} else {
-			WS_CONNECTIONS[pair.Hash] = append(WS_CONNECTIONS[pair.Hash], pair.Connection)
+			clientExists := false
+			for _, el := range WS_CONNECTIONS[pair.UserHash] {
+				if el.ClientHash == pair.ClientHash {
+					clientExists = true
+				}
+			}
+			if !clientExists {
+				WS_CONNECTIONS[pair.UserHash] = append(WS_CONNECTIONS[pair.UserHash], ConnectionIdentifier{
+					Connection: pair.Connection,
+					ClientHash: pair.ClientHash,
+				})
+			}
 		}
 	}
 }
