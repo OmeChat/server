@@ -25,7 +25,7 @@ func (s ClientModel) getAllClients() map[string]ClientModel {
 // hashExists checks if there is already an client
 // identified by the given hash
 func (s ClientModel) hashExists(hash string) bool {
-	for h, _ := range s.getAllClients() {
+	for h := range s.getAllClients() {
 		if h == hash {
 			return true
 		}

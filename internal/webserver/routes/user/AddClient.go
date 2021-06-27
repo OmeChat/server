@@ -35,6 +35,7 @@ func AddClient(ctx *fiber.Ctx) error {
 	}
 	usrHash := storage.UserModel{}.GetHashByUsername(req.Username)
 	clientHash, client := storage.ClientModel{}.AddClient(usrHash)
+	storage.UserModel{}.AddClientToUser(usrHash, clientHash)
 	return ctx.JSON(addClientResponse{
 		"Successfully added client to server",
 		clientHash,
