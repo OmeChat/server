@@ -34,6 +34,9 @@ func Router(c *websocket.Conn) {
 		case "request-random-people":
 			requestRandomPeople(c, req.UserHash, req.Payload)
 			break
+		case "send-message":
+			sendMessage(c, req.UserHash, req.Payload)
+			break
 		default:
 			err := c.WriteJSON(ErrorResponse{
 				Message: "unknown action",

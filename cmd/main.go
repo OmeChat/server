@@ -17,7 +17,15 @@ func main() {
 	app.Use(logger.New())
 	app.Use(cors.New())
 
-	app.Use("/ws", websocket.New(ws.Router))
+	app.Use("/ws", func(c *fiber.Ctx) error {
+		if websocket.IsWebSocketUpgrade(c) {
+			c.Locals("allowed", true)
+			return c.Next()
+		}
+		return fiber.ErrUpgradeRequired
+	})
+
+	app.Get("/ws", websocket.New(ws.Router))
 
 	channel := make(chan ws.ConnectionPair)
 	go ws.DataHandler(channel)
