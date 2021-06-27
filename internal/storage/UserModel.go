@@ -47,7 +47,7 @@ func (s UserModel) CreateUserAccount(username string, age int) (UserModel, strin
 		}
 		hash = hashing.SHA512(random.GenerateUID(64))
 	}
-	secret := random.GenerateUID(32)
+	secret := random.GenerateUID(64)
 	users := s.getAllUser()
 	user := UserModel{
 		Clients:  []string{},
