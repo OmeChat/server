@@ -36,6 +36,6 @@ func main() {
 	userAPI.Post("/create-account", userRoutes.CreateAccount)
 	userAPI.Post("/add-client", userRoutes.AddClient)
 
-	app.Listen(":8080")
+	_ = app.Listen(":8080")
 
 }

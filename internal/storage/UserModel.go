@@ -27,7 +27,7 @@ func (s UserModel) getAllUser() map[string]UserModel {
 // user existing identified by the given hash.
 // It returns this state as a boolean value
 func (s UserModel) hashExists(hash string) bool {
-	for h, _ := range s.getAllUser() {
+	for h := range s.getAllUser() {
 		if h == hash {
 			return true
 		}

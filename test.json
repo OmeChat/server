@@ -1,0 +1,10 @@
+{
+  "action": "send-message",
+  "user_hash": "964766d4d373ab4d9622e5062004b2cc56a805984f7c04103355de5c48b6ed1d1f65b0ba84f5fda7c5e61b9eb609c29c6f5f1b1db2ec46f20ae567a2ddb46f7d",
+  "client_hash": "ce3c609306e503f2a776c3426024f7d3f04ad1ee11d9040beee8bb7a079467e41dbbd1bd2138fec8020c529df8112f271cff482f1246c69ff0414eaf329acef2",
+  "access_token":"EDCtNaTadxEpKMibFXSkLCfiBOKwlIBZMpIzOTywGJovSLFFYXgrTBTocuePNWFl",
+  "payload": {
+    "target_hash": "7c6e30f280abaa299173e0f65fb0a1b00617407574a15abb4a72c8c99d62f8faf191c4f76a6444a59da08cbfd1581ea4e0615faf2e8f78d5c3376274ee10bd3f",
+    "message": "Hey du vollspast"
+  }
+}
