@@ -14,6 +14,7 @@ type createAccountRequest struct {
 type createAccountResponse struct {
 	Message       string `json:"message"`
 	AccountSecret string `json:"account_secret"`
+	UserHash      string `json:"user_hash"`
 	Status        int    `json:"status"`
 }
 
@@ -32,10 +33,11 @@ func CreateAccount(ctx *fiber.Ctx) error {
 			Status: 400,
 		})
 	}
-	user := storage.UserModel{}.CreateUserAccount(req.Username, req.Age)
+	user, hash := storage.UserModel{}.CreateUserAccount(req.Username, req.Age)
 	return ctx.JSON(createAccountResponse{
 		Message:       "Successfully created new user account",
 		AccountSecret: user.Secret,
+		UserHash:      hash,
 		Status:        200,
 	})
 }

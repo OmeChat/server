@@ -38,8 +38,8 @@ func (s UserModel) hashExists(hash string) bool {
 // CreateUserAccount creates a new user account trough the
 // given values and inserts it into the user.json in the
 // data folder. After that it returns the complete struct
-// of the new user instance
-func (s UserModel) CreateUserAccount(username string, age int) UserModel {
+// of the new user instance and the hash of the user
+func (s UserModel) CreateUserAccount(username string, age int) (UserModel, string) {
 	hash := hashing.SHA512(random.GenerateUID(64))
 	for {
 		if !s.hashExists(hash) {
@@ -58,7 +58,7 @@ func (s UserModel) CreateUserAccount(username string, age int) UserModel {
 	users[hash] = user
 	jsonString, _ := json.Marshal(users)
 	_ = ioutil.WriteFile("./data/user.json", jsonString, 0644)
-	return user
+	return user, hash
 }
 
 // GetUserByUsername requests the user identified by
