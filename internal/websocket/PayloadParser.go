@@ -8,6 +8,8 @@ func PayloadParser(action string, payload interface{}) (map[string]interface{}, 
 	switch action {
 	case "exchange-key":
 		return data, data["target_hash"] != nil && data["key"] != nil
+	case "request-random-people":
+		return data, data["tolerance"] != nil
 	}
 	return nil, false
 }

@@ -107,3 +107,21 @@ func (s UserModel) AddClientToUser(userHash string, clientHash string) {
 	jsonString, _ := json.Marshal(users)
 	_ = ioutil.WriteFile("./data/user.json", jsonString, 0644)
 }
+
+// GetUserAtAgeWithTolerance searches for user at the same age. There are also
+// an tolerance given. It is the tolerance for the age. If the tolerance is 2,
+// users at an age 2 years below or upon the given age are also fetched
+func (s UserModel) GetUserAtAgeWithTolerance(age int, tolerance int, userHash string) []ExposedUser {
+	users := s.getAllUser()
+	var retunedUser []ExposedUser
+	for hash, usr := range users {
+		if (usr.Age < age+tolerance || usr.Age > age-tolerance) && hash != userHash {
+			retunedUser = append(retunedUser, ExposedUser{
+				Age:      usr.Age,
+				Username: usr.Username,
+				UserHash: hash,
+			})
+		}
+	}
+	return retunedUser
+}

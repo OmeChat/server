@@ -31,6 +31,9 @@ func Router(c *websocket.Conn) {
 		case "exchange-key":
 			exchangeKey(c, req.Payload, req.UserHash)
 			break
+		case "request-random-people":
+			requestRandomPeople(c, req.UserHash, req.Payload)
+			break
 		default:
 			err := c.WriteJSON(ErrorResponse{
 				Message: "unknown action",

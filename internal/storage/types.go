@@ -17,3 +17,12 @@ type ClientModel struct {
 	Owner       string `json:"owner"`
 	AccessToken string `json:"access_token"`
 }
+
+// The ExposedUser is the UserModel, but
+// with the personal data removed and the
+// userHash added
+type ExposedUser struct {
+	Age      int    `json:"age"`
+	Username string `json:"username"`
+	UserHash string `json:"user_hash"`
+}
