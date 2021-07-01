@@ -13,6 +13,7 @@ type addClientRequest struct {
 
 type addClientResponse struct {
 	Message     string `json:"message"`
+	UserHash    string `json:"user_hash"`
 	ClientHash  string `json:"client_hash"`
 	AccessToken string `json:"access_token"`
 	Status      int    `json:"status"`
@@ -36,8 +37,10 @@ func AddClient(ctx *fiber.Ctx) error {
 	usrHash := storage.UserModel{}.GetHashByUsername(req.Username)
 	clientHash, client := storage.ClientModel{}.AddClient(usrHash)
 	storage.UserModel{}.AddClientToUser(usrHash, clientHash)
+
 	return ctx.JSON(addClientResponse{
 		"Successfully added client to server",
+		usrHash,
 		clientHash,
 		client.AccessToken,
 		200,
