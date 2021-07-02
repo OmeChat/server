@@ -8,7 +8,7 @@ import (
 type sendMessageResponse struct {
 	Message string `json:"message"`
 	Sender  string `json:"sender"`
-	SentAt  string `json:"sent_at"`
+	SentAt  int64  `json:"sent_at"`
 }
 
 // sendMessage sends an message to another user, who is identified by his
@@ -29,7 +29,7 @@ func sendMessage(c *websocket.Conn, userHash string, payload interface{}) {
 		_ = client.Connection.WriteJSON(sendMessageResponse{
 			Message: data["message"].(string),
 			Sender:  userHash,
-			SentAt:  time.Now().Format("YYYY-MM-DD hh:mm:ss"),
+			SentAt:  time.Now().Unix(),
 		})
 	}
 }
