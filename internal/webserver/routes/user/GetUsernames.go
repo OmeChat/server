@@ -40,7 +40,7 @@ func GetUsernames(ctx *fiber.Ctx) error {
 	}
 	split := strings.Split(obj.Usernames, ";")
 
-	var usernames map[string]string
+	usernames := make(map[string]string)
 	for _, el := range split {
 		usernames[el] = storage.UserModel{}.GetUserByHash(el).Username
 	}
