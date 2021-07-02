@@ -35,9 +35,11 @@ func main() {
 	ws.WS_CONNECTIONS = m
 
 	app.Get("/", routes.DefaultEndpoint)
+
 	userAPI := app.Group("/user-api")
 	userAPI.Post("/create-account", userRoutes.CreateAccount)
 	userAPI.Post("/add-client", userRoutes.AddClient)
+	userAPI.Get("/get-usernames", userRoutes.GetUsernames)
 
 	_ = app.Listen(":8080")
 
