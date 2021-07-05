@@ -51,5 +51,5 @@ func RequestRandomPeople(ctx *fiber.Ctx) error {
 func validateRequestRandomPeopleRequest(obj requestRandomPeopleRequest) bool {
 	_, err := strconv.Atoi(obj.Tolerance)
 	return obj.UserHash != "" && obj.ClientHash != "" &&
-		obj.AccessToken != "" && obj.Tolerance != "" && err != nil
+		obj.AccessToken != "" && obj.Tolerance != "" && err == nil
 }
