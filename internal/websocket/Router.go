@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"fmt"
 	"github.com/OmeChat/server/internal/storage"
 	"github.com/gofiber/websocket/v2"
 )
@@ -17,7 +18,7 @@ func Router(c *websocket.Conn) {
 				Status:  200,
 			})
 			if err != nil {
-				panic(err.Error())
+				fmt.Println(err.Error())
 			}
 			break
 		}
