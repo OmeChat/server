@@ -4,13 +4,14 @@ import (
 	"github.com/OmeChat/server/internal/storage"
 	"github.com/OmeChat/server/internal/webserver/models"
 	"github.com/gofiber/fiber/v2"
+	"strconv"
 )
 
 type requestRandomPeopleRequest struct {
 	UserHash    string `json:"user_hash"`
 	ClientHash  string `json:"client_hash"`
 	AccessToken string `json:"access_token"`
-	Tolerance   int    `json:"tolerance"`
+	Tolerance   string `json:"tolerance"`
 }
 
 type requestRandomPeopleResponse struct {
@@ -24,6 +25,7 @@ func RequestRandomPeople(ctx *fiber.Ctx) error {
 		UserHash:    ctx.Query("user_hash", ""),
 		ClientHash:  ctx.Query("client_hash", ""),
 		AccessToken: ctx.Query("access_token", ""),
+		Tolerance:   ctx.Query("tolerance", ""),
 	}
 	if !validateRequestRandomPeopleRequest(obj) {
 		return ctx.JSON(models.RequestError{
@@ -31,6 +33,7 @@ func RequestRandomPeople(ctx *fiber.Ctx) error {
 			Error:  "Invalid request parameters",
 		})
 	}
+	tolerance, _ := strconv.Atoi(obj.Tolerance)
 	if !storage.CheckAuthStatus(obj.UserHash, obj.ClientHash, obj.AccessToken) {
 		return ctx.JSON(models.RequestError{
 			Status: 400,
@@ -38,7 +41,7 @@ func RequestRandomPeople(ctx *fiber.Ctx) error {
 		})
 	}
 	user := storage.UserModel{}.GetUserByHash(obj.UserHash)
-	matchingPeople := storage.UserModel{}.GetUserAtAgeWithTolerance(user.Age, obj.Tolerance, obj.UserHash)
+	matchingPeople := storage.UserModel{}.GetUserAtAgeWithTolerance(user.Age, tolerance, obj.UserHash)
 	return ctx.JSON(requestRandomPeopleResponse{
 		Status:       200,
 		MatchingUser: matchingPeople,
@@ -46,6 +49,7 @@ func RequestRandomPeople(ctx *fiber.Ctx) error {
 }
 
 func validateRequestRandomPeopleRequest(obj requestRandomPeopleRequest) bool {
+	_, err := strconv.Atoi(obj.Tolerance)
 	return obj.UserHash != "" && obj.ClientHash != "" &&
-		obj.AccessToken != "" && obj.Tolerance > 0
+		obj.AccessToken != "" && obj.Tolerance != "" && err != nil
 }
