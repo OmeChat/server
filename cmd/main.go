@@ -40,6 +40,7 @@ func main() {
 	userAPI.Post("/create-account", userRoutes.CreateAccount)
 	userAPI.Post("/add-client", userRoutes.AddClient)
 	userAPI.Get("/get-usernames", userRoutes.GetUsernames)
+	userAPI.Get("/get-matching-user", userRoutes.RequestRandomPeople)
 
 	_ = app.Listen(":8080")
 

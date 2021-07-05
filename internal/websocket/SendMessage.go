@@ -18,20 +18,26 @@ type sendMessageResponse struct {
 func sendMessage(c *websocket.Conn, userHash string, payload interface{}) {
 	data, ok := PayloadParser("send-message", payload)
 	if !ok {
-		_ = c.WriteJSON(ErrorResponse{
+		err := c.WriteJSON(ErrorResponse{
 			Message: "Invalid payload",
 			Error:   "Cannot parse payload",
 			Status:  200,
 		})
+		if err != nil {
+			panic(err.Error())
+		}
 		return
 	}
 	clients := WS_CONNECTIONS[data["target_hash"].(string)]
 	for _, client := range clients {
-		_ = client.Connection.WriteJSON(sendMessageResponse{
+		err := client.Connection.WriteJSON(sendMessageResponse{
 			Message: data["message"].(string),
 			Sender:  userHash,
 			SentAt:  time.Now().Unix(),
 			Action:  "send-message",
 		})
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 }

@@ -11,19 +11,25 @@ func Router(c *websocket.Conn) {
 	req := new(WebsocketRequest)
 	for {
 		if err := c.ReadJSON(req); err != nil {
-			_ = c.WriteJSON(ErrorResponse{
+			err = c.WriteJSON(ErrorResponse{
 				Message: "invalid request payload",
 				Error:   err.Error(),
 				Status:  200,
 			})
+			if err != nil {
+				panic(err.Error())
+			}
 			break
 		}
 		if !storage.CheckAuthStatus(req.UserHash, req.ClientHash, req.AccessToken) {
-			_ = c.WriteJSON(ErrorResponse{
+			err := c.WriteJSON(ErrorResponse{
 				Message: "login failed",
 				Error:   "The given login credentials are wrong",
 				Status:  200,
 			})
+			if err != nil {
+				panic(err.Error())
+			}
 			break
 		}
 		WS_DATAFLOW_CHANNEL <- ConnectionPair{req.UserHash, req.ClientHash, c}
@@ -41,7 +47,10 @@ func Router(c *websocket.Conn) {
 				Status:  200,
 			})
 			if err != nil {
-				_ = c.Close()
+				err = c.Close()
+				if err != nil {
+					panic(err.Error())
+				}
 			}
 		}
 	}
