@@ -16,17 +16,23 @@ type requestRandomPeopleResponse struct {
 func requestRandomPeople(c *websocket.Conn, userHash string, payload interface{}) {
 	data, ok := PayloadParser("request-random-people", payload)
 	if !ok {
-		_ = c.WriteJSON(ErrorResponse{
+		err := c.WriteJSON(ErrorResponse{
 			Message: "Invalid payload",
 			Error:   "Cannot parse payload",
 			Status:  200,
 		})
+		if err != nil {
+			panic(err.Error())
+		}
 		return
 	}
 	user := storage.UserModel{}.GetUserByHash(userHash)
 	matchingPeople := storage.UserModel{}.GetUserAtAgeWithTolerance(user.Age, int(data["tolerance"].(float64)), userHash)
-	_ = c.WriteJSON(requestRandomPeopleResponse{
+	err := c.WriteJSON(requestRandomPeopleResponse{
 		Action: "request-random-people",
 		User:   matchingPeople,
 	})
+	if err != nil {
+		panic(err.Error())
+	}
 }
