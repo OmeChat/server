@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"fmt"
 	"github.com/OmeChat/server/internal/storage"
 	"github.com/gofiber/websocket/v2"
 )
@@ -22,7 +23,7 @@ func requestRandomPeople(c *websocket.Conn, userHash string, payload interface{}
 			Status:  200,
 		})
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
 		}
 		return
 	}
@@ -33,6 +34,6 @@ func requestRandomPeople(c *websocket.Conn, userHash string, payload interface{}
 		User:   matchingPeople,
 	})
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
 	}
 }
