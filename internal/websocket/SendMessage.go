@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"fmt"
 	"github.com/gofiber/websocket/v2"
 	"time"
 )
@@ -24,7 +25,7 @@ func sendMessage(c *websocket.Conn, userHash string, payload interface{}) {
 			Status:  200,
 		})
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
 		}
 		return
 	}
@@ -37,7 +38,7 @@ func sendMessage(c *websocket.Conn, userHash string, payload interface{}) {
 			Action:  "send-message",
 		})
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
 		}
 	}
 }

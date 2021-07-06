@@ -20,18 +20,10 @@ func DataHandler(dataChannel chan ConnectionPair) {
 			})
 			WS_CONNECTIONS[pair.UserHash] = arr
 		} else {
-			clientExists := false
-			for _, el := range WS_CONNECTIONS[pair.UserHash] {
-				if el.ClientHash == pair.ClientHash {
-					clientExists = true
-				}
-			}
-			if !clientExists {
-				WS_CONNECTIONS[pair.UserHash] = append(WS_CONNECTIONS[pair.UserHash], ConnectionIdentifier{
-					Connection: pair.Connection,
-					ClientHash: pair.ClientHash,
-				})
-			}
+			WS_CONNECTIONS[pair.UserHash] = append(WS_CONNECTIONS[pair.UserHash], ConnectionIdentifier{
+				Connection: pair.Connection,
+				ClientHash: pair.ClientHash,
+			})
 		}
 	}
 }

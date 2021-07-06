@@ -29,7 +29,7 @@ func Router(c *websocket.Conn) {
 				Status:  200,
 			})
 			if err != nil {
-				panic(err.Error())
+				fmt.Println(err.Error())
 			}
 			break
 		}
@@ -48,10 +48,7 @@ func Router(c *websocket.Conn) {
 				Status:  200,
 			})
 			if err != nil {
-				err = c.Close()
-				if err != nil {
-					panic(err.Error())
-				}
+				fmt.Println(err.Error())
 			}
 		}
 	}

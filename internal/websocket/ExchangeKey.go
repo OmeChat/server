@@ -1,6 +1,7 @@
 package websocket
 
 import (
+	"fmt"
 	"github.com/gofiber/websocket/v2"
 )
 
@@ -22,7 +23,7 @@ func exchangeKey(c *websocket.Conn, payload interface{}, userHash string) {
 			Status:  200,
 		})
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
 		}
 		return
 	}
@@ -36,7 +37,7 @@ func exchangeKey(c *websocket.Conn, payload interface{}, userHash string) {
 			SenderHash: userHash,
 		})
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
 		}
 	}
 }
